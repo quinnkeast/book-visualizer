@@ -346,4 +346,56 @@ const books = [
   }
 ];
 
-export default books;
+const authors = books.reduce((prev, cur) => {
+  return (prev.indexOf(cur.author) < 0) ? prev.concat([cur.author]) : prev;
+}, []);
+
+const series = books.reduce((prev, cur) => {
+  return (prev.indexOf(cur.series) < 0) ? prev.concat([cur.series]) : prev;
+}, []);
+
+const averageWordsPerPage = () => {
+  let averages = [];
+  books.map((book) => averages.push(book.words / book.pages));
+  const sum = averages.reduce((total, value) => total + value);
+  return Math.round(sum / averages.length);
+};
+
+const totalWords = () => {
+  return books.reduce((total, book) => total + book.words, 0);
+}
+
+const totalPages = () => {
+  return Math.round(totalWords / averageWordsPerPage(books));
+}
+
+const lowestWordCount = () => {
+  const book = books.reduce((prev, curr) => prev.words < curr.words ? prev : curr);
+  return book.words;
+}
+
+const highestWordCount = () => {
+  const book = books.reduce((prev, curr) => prev.words < curr.words ? prev : curr);
+  return book.words;
+}
+
+const numberOfPagesToRepresentBook = (wordcount) => {
+  return Math.round((wordcount / averageWordsPerPage()) * reducingPercentage(1.5));
+};
+
+const reducingPercentage = (minimum = 1) => {
+  return minimum / (totalWords(books) / lowestWordCount(books));
+}
+
+export {
+  books,
+  authors,
+  series,
+  averageWordsPerPage,
+  totalWords,
+  totalPages,
+  lowestWordCount,
+  highestWordCount,
+  numberOfPagesToRepresentBook,
+  reducingPercentage
+};

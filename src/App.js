@@ -1,41 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import books from './bookdata';
+import { books, authors, series } from './bookdata';
+import Book from './Book';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
-
-const averageWordsPerPage = () => {
-  let averages = [];
-  books.map((book) => averages.push(book.words / book.pages));
-  const sum = averages.reduce((total, value) => total + value);
-  return Math.round(sum / averages.length);
-};
-
-const totalWords = () => {
-  return books.reduce((total, book) => total + book.words, 0);
-}
-
-const totalPages = () => {
-  return Math.round(totalWords / averageWordsPerPage(books));
-}
-
-const lowestWordCount = () => {
-  const book = books.reduce((prev, curr) => prev.words < curr.words ? prev : curr);
-  return book.words;
-}
-
-const highestWordCount = () => {
-  const book = books.reduce((prev, curr) => prev.words < curr.words ? prev : curr);
-  return book.words;
-}
-
-const numberOfPagesToRepresentBook = (wordcount) => {
-  return Math.round((wordcount / averageWordsPerPage()) * reducingPercentage(1.5));
-};
-
-const reducingPercentage = (minimum = 1) => {
-  return minimum / (totalWords(books) / lowestWordCount(books));
-}
 
 const getRandomColour = () => {
   const letters = '0123456789ABCDEF';
@@ -46,8 +14,11 @@ const getRandomColour = () => {
   return colour;
 }
 
-const generateColours = () => {
-  const colours = books.map(book => getRandomColour());
+const generateColours = (count) => {
+  let colours = [];
+  for (let i = 0; i < count; i++) {
+    colours.push(getRandomColour());
+  }
   return colours;
 }
 
@@ -61,7 +32,7 @@ class App extends Component {
 
     this.state = {
       focusedBook: null,
-      colours: generateColours(),
+      colours: generateColours(books.length),
       filter: 'NONE',
       selectedAuthor: null,
       selectedSeries: null
@@ -94,15 +65,7 @@ class App extends Component {
   }
 
   render() {
-    const authors = books.reduce((prev, cur) => {
-      return (prev.indexOf(cur.author) < 0) ? prev.concat([cur.author]) : prev;
-    }, []);
-
-    const series = books.reduce((prev, cur) => {
-      return (prev.indexOf(cur.series) < 0) ? prev.concat([cur.series]) : prev;
-    }, []);
-
-    const bookPages = books.map((book, key) => {
+    const renderBooks = books.map((book, key) => {
       let bookClass = classNames({
         'book': true,
         'book--active': this.state.focusedBook === book.title,
@@ -112,22 +75,7 @@ class App extends Component {
       const style = {
         backgroundColor: this.state.colours[key]
       };
-      let pages = [];
-      for (let i = 0; i < numberOfPagesToRepresentBook(book.words); i++) {
-        pages.push(
-          <li className={bookClass} style={style} alt={book.title} data-tip={`${book.title} by ${book.author}`} onMouseEnter={() => this.handleMouseEnter(book.title)} onMouseLeave={() => this.handleMouseLeave(book.title)}>
-            <div className='book-lines'>
-              <div className='line'></div>
-              <div className='line'></div>
-              <div className='line'></div>
-              <div className='line'></div>
-              <div className='line'></div>
-              <div className='line'></div>
-              <div className='line'></div>
-            </div>
-          </li>);
-      }
-      return pages;
+      return <Book book={book} key={key} bookClass={bookClass} style={style} handleMouseEnter={this.handleMouseEnter} handleMouseLeave={this.handleMouseLeave} />
     });
 
     return (
@@ -136,7 +84,7 @@ class App extends Component {
           <div className='row book-pages'>
             <div className='col-12'>
               <ul className='books'>
-                {bookPages}
+                {renderBooks}
                 <ReactTooltip effect='solid' />
               </ul>
             </div>
