@@ -1,25 +1,47 @@
 import React, { Component } from 'react';
 import './App.css';
-import { books, authors, series } from './bookdata';
+import { books, alphabeticalAuthors as authors, alphabeticalSeries as series } from './bookdata';
 import Book from './Book';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 
-const getRandomColour = () => {
-  const letters = '0123456789ABCDEF';
-  let colour = '#';
-  for (let i = 0; i < 6; i++) {
-    colour += letters[Math.floor(Math.random() * 16)];
-  }
-  return colour;
+function nearInt(op, target, range) {
+  return op < target + range && op > target - range;
 }
 
-const generateColours = (count) => {
-  let colours = [];
-  for (let i = 0; i < count; i++) {
-    colours.push(getRandomColour());
+function shuffle(array, offset) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
   }
-  return colours;
+  return array;
+}
+
+function generateColours(n, offset) {
+  let distance = 360 / n;
+  let colours = [];
+  for (let i = 1; i <= n; i++) {
+    colours.push({
+      'hue': distance * i + offset,
+      'saturation': 67,
+      'lightness': 55
+    });
+  }
+  return toHSL(shuffle(colours, offset));
+}
+
+function toHSL(colours) {
+  let formattedColours = [];
+  for (let i = 0; i < colours.length; i++) {
+    formattedColours.push(`hsl(${colours[i].hue}deg, ${colours[i].saturation}%, ${colours[i].lightness}%)`);
+  }
+  return formattedColours;
 }
 
 class App extends Component {
@@ -29,10 +51,11 @@ class App extends Component {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleSelectAuthor = this.handleSelectAuthor.bind(this);
     this.handleSelectSeries = this.handleSelectSeries.bind(this);
+    this.resetFilter = this.resetFilter.bind(this);
 
     this.state = {
       focusedBook: null,
-      colours: generateColours(books.length),
+      colours: generateColours(books.length, (360 / books.length)),
       filter: 'NONE',
       selectedAuthor: null,
       selectedSeries: null
@@ -48,20 +71,36 @@ class App extends Component {
     this.setState({focusedBook: null});
   }
 
-  handleSelectAuthor(author) {
+  resetFilter() {
     this.setState({
-      filter: 'AUTHOR',
-      selectedAuthor: author,
+      filter: 'NONE',
+      selectedAuthor: null,
       selectedSeries: null
     });
   }
 
+  handleSelectAuthor(author) {
+    if (this.state.selectedAuthor === author) {
+      this.resetFilter();
+    } else {
+      this.setState({
+        filter: 'AUTHOR',
+        selectedAuthor: author,
+        selectedSeries: null
+      });
+    }
+  }
+
   handleSelectSeries(series) {
-    this.setState({
-      filter: 'SERIES',
-      selectedAuthor: null,
-      selectedSeries: series
-    });
+    if (this.state.selectedSeries === series) {
+      this.resetFilter();
+    } else {
+      this.setState({
+        filter: 'SERIES',
+        selectedAuthor: null,
+        selectedSeries: series
+      });
+    }
   }
 
   render() {
@@ -69,6 +108,7 @@ class App extends Component {
       let bookClass = classNames({
         'book': true,
         'book--active': this.state.focusedBook === book.title,
+        'book--desaturated': (this.state.filter === 'SERIES' && this.state.selectedSeries !== book.series) || (this.state.filter === 'AUTHOR' && this.state.selectedAuthor !== book.author),
         'book--series-active': this.state.filter === 'SERIES' && this.state.selectedSeries === book.series,
         'book--author-active': this.state.filter === 'AUTHOR' && this.state.selectedAuthor === book.author
       });
@@ -91,7 +131,7 @@ class App extends Component {
           </div>
           <div className='row'>
             <div className='col-6'>
-              <h2>Authors</h2>
+              <p><strong>Authors</strong></p>
               <ul className='authors-list'>
                 {authors.map((author, key) => {
                   let authorClass = classNames({
@@ -103,7 +143,7 @@ class App extends Component {
               </ul>
             </div>
             <div className='col-6'>
-              <h2>Series</h2>
+              <p><strong>Series</strong></p>
               <ul className='series-list'>
                 {series.map((series, key) => {
                   let seriesClass = classNames({

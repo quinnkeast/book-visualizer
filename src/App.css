@@ -28,7 +28,6 @@ html {
 .books .book {
   width: 100%;
   list-style: none;
-  box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
   position: relative;
   overflow: hidden;
   border: 1px solid transparent;
@@ -44,21 +43,23 @@ html {
 }
 
 .books .book.book--active {
-  transform: translateY(-2px);
-  border: 1px solid rgba(245, 25, 101, 1);
+  filter: saturate(100%)!important;
+  border: 1px solid rgba(255, 255, 255, .5);
   box-shadow: 0 0 5px rgba(245, 25, 101, 1);
 }
 
 .books .book.book--author-active {
-  transform: translateY(-2px);
-  border: 1px solid rgba(141, 255, 9, 1);
-  box-shadow: 0 0 5px rgba(141, 255, 9, 1);
+  border: 1px solid rgba(255, 255, 255, .5);
+  box-shadow: 0 0 5px rgba(245, 25, 101, 1);
 }
 
 .books .book.book--series-active {
-  transform: translateY(-2px);
-  border: 1px solid rgba(81, 203, 238, 1);
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(255, 255, 255, .5);
+  box-shadow: 0 0 5px rgba(245, 25, 101, 1);
+}
+
+.books .book.book--desaturated {
+  filter: saturate(10%);
 }
 
 .book-lines {

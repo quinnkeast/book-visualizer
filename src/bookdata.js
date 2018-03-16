@@ -350,9 +350,13 @@ const authors = books.reduce((prev, cur) => {
   return (prev.indexOf(cur.author) < 0) ? prev.concat([cur.author]) : prev;
 }, []);
 
+const alphabeticalAuthors = authors.sort((a, b) => a.localeCompare(b));
+
 const series = books.reduce((prev, cur) => {
   return (prev.indexOf(cur.series) < 0) ? prev.concat([cur.series]) : prev;
 }, []);
+
+const alphabeticalSeries = series.sort((a, b) => a.localeCompare(b));
 
 const averageWordsPerPage = () => {
   let averages = [];
@@ -390,7 +394,9 @@ const reducingPercentage = (minimum = 1) => {
 export {
   books,
   authors,
+  alphabeticalAuthors,
   series,
+  alphabeticalSeries,
   averageWordsPerPage,
   totalWords,
   totalPages,
