@@ -1,5 +1,21 @@
 const books = [
   {
+    "title": "The Iron King",
+    "author": "Maurice Druon",
+    "series": "The Accursed Kings",
+    "pages": 368,
+    "wordcount": 114080,
+    "type": "Fiction"
+  },
+  {
+    "title": "The Strangled Queen",
+    "author": "Maurice Druon",
+    "series": "The Accursed Kings",
+    "pages": 304,
+    "wordcount": 94240,
+    "type": "Fiction"
+  },
+  {
     "title": "The Eye of the World",
     "author": "Robert Jordan",
     "series": "The Wheel of Time",
@@ -184,6 +200,14 @@ const books = [
     "type": "Fiction"
   },
   {
+    "title": "Edgedancer",
+    "author": "Brandon Sanderson",
+    "series": "The Way of Kings",
+    "pages": 272,
+    "wordcount": 84320,
+    "type": "Fiction"
+  },
+  {
     "title": "Wolves of the Calla",
     "author": "Stephen King",
     "series": "The Dark Tower",
@@ -219,14 +243,6 @@ const books = [
     "series": "The Way of Kings",
     "pages": 1248,
     "wordcount": 450000,
-    "type": "Fiction"
-  },
-  {
-    "title": "Edgedancer",
-    "author": "Brandon Sanderson",
-    "series": "The Way of Kings",
-    "pages": 272,
-    "wordcount": 84320,
     "type": "Fiction"
   },
   {
@@ -285,22 +301,6 @@ const books = [
     "pages": 335,
     "wordcount": 114080,
     "type": "Non-Fiction"
-  },
-  {
-    "title": "The Iron King",
-    "author": "Maurice Druon",
-    "series": "The Accursed Kings",
-    "pages": 368,
-    "wordcount": 114080,
-    "type": "Fiction"
-  },
-  {
-    "title": "The Strangled Queen",
-    "author": "Maurice Druon",
-    "series": "The Accursed Kings",
-    "pages": 304,
-    "wordcount": 94240,
-    "type": "Fiction"
   },
   {
     "title": "The Dreamblood Duology",

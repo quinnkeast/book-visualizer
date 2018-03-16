@@ -29,7 +29,7 @@ function generateColours(n, offset) {
   for (let i = 1; i <= n; i++) {
     colours.push({
       'hue': distance * i + offset,
-      'saturation': 67,
+      'saturation': 50,
       'lightness': 55
     });
   }
@@ -124,7 +124,9 @@ class App extends Component {
           <div className='row book-pages'>
             <div className='col-12'>
               <ul className='books'>
+                <li className='book-cover'></li>
                 {renderBooks}
+                <li className='book-cover'></li>
                 <ReactTooltip effect='solid' />
               </ul>
             </div>

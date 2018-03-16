@@ -16,75 +16,54 @@ html {
 }
 
 .books {
-  display: grid;
-  grid-gap: 10px 5px;
-  grid-template-columns: repeat(24, 1fr);
-  place-items: start;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
   padding: 0;
   margin: 0;
   width: 100%;
 }
 
+.books .book-cover {
+  width: 16px;
+  border-radius: 3px;
+  background-color: #54494b;
+  list-style: none;
+  display: block;
+}
+
 .books .book {
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.books .book .book-page {
+  width: 2px;
+  height: 700px;
   list-style: none;
   position: relative;
   overflow: hidden;
-  border: 1px solid transparent;
-  transition: all 150ms ease-in-out;
+  margin: 8px 0;
+  transition: all 50ms ease-in-out;
 }
 
-.books .book::before {
-  content: "";
-  display: inline-block;
-  width: 1px;
-  height: 0;
-  padding-bottom: calc(100% / (1/1.5));
-}
-
-.books .book.book--active {
+.books .book.book--active .book-page {
   filter: saturate(100%)!important;
-  border: 1px solid rgba(255, 255, 255, .5);
-  box-shadow: 0 0 5px rgba(245, 25, 101, 1);
 }
 
-.books .book.book--author-active {
-  border: 1px solid rgba(255, 255, 255, .5);
-  box-shadow: 0 0 5px rgba(245, 25, 101, 1);
+.books .book.book--author-active .book-page {
+  
 }
 
-.books .book.book--series-active {
-  border: 1px solid rgba(255, 255, 255, .5);
-  box-shadow: 0 0 5px rgba(245, 25, 101, 1);
+.books .book.book--series-active .book-page {
+  
 }
 
-.books .book.book--desaturated {
-  filter: saturate(10%);
-}
-
-.book-lines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.book-lines .line {
-  height: 2px;
-  background-color: #ffffff;
-  opacity: .2;
-  display: block;
-  margin: 1px 3px;
-  z-index: 5;
-}
-
-.book-lines .line:last-of-type {
-  width: 50%;
+.books .book.book--desaturated .book-page {
+  opacity: .5;
+  filter: saturate(5%);
 }
 
 .authors-list {
@@ -96,6 +75,11 @@ html {
 
 .authors-list .author {
   list-style: none;
+  font-size: .8rem;
+}
+
+.authors-list .author:hover {
+  cursor: pointer;
 }
 
 .authors-list .author.author--selected {
@@ -112,6 +96,11 @@ html {
 
 .series-list .series {
   list-style: none;
+  font-size: .8rem;
+}
+
+.series-list .series:hover {
+  cursor: pointer;
 }
 
 .series-list .series.series--selected {
